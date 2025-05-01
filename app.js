@@ -21,6 +21,7 @@ upload.addEventListener('change', function(e) {
   reader.onload = function(event) {
     const img = new Image();
     img.onload = function() {
+      valueSlider.value = 6;
       canvasOriginal.width = canvasPosterized.width = img.width;
       canvasOriginal.height = canvasPosterized.height = img.height;
       ctxOriginal.drawImage(img, 0, 0);
@@ -81,22 +82,29 @@ function simplifyColors() {
   const data = imageData.data;
   const chromaScale = chromaSlider.value / 100;
   for (let i = 0; i < data.length; i += 4) {
-    data[i+1] *= chromaScale;
-    data[i+2] *= chromaScale;
+    const avg = (data[i] + data[i+1] + data[i+2]) / 3;
+    data[i] = avg + (data[i] - avg) * chromaScale;
+    data[i+1] = avg + (data[i+1] - avg) * chromaScale;
+    data[i+2] = avg + (data[i+2] - avg) * chromaScale;
   }
   ctxPosterized.putImageData(imageData, 0, 0);
 }
 
 function drawGrid() {
-  const step = 100;
+  const thirdsX = canvasPosterized.width / 3;
+  const thirdsY = canvasPosterized.height / 3;
   ctxPosterized.strokeStyle = 'rgba(0,0,0,0.2)';
-  for (let x = 0; x < canvasPosterized.width; x += step) {
+  for (let i = 1; i < 3; i++) {
+    let x = i * thirdsX;
+
     ctxPosterized.beginPath();
     ctxPosterized.moveTo(x, 0);
     ctxPosterized.lineTo(x, canvasPosterized.height);
     ctxPosterized.stroke();
   }
-  for (let y = 0; y < canvasPosterized.height; y += step) {
+  for (let i = 1; i < 3; i++) {
+    let y = i * thirdsY;
+
     ctxPosterized.beginPath();
     ctxPosterized.moveTo(0, y);
     ctxPosterized.lineTo(canvasPosterized.width, y);

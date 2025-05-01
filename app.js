@@ -41,11 +41,11 @@ function renderPosterized() {
 
   if (notanToggle.checked) {
     applyNotan();
-  } else if (simplifyShapesToggle.checked) {
+  } else else { applyPosterization(parseInt(valueSlider.value)); }
     applyPosterization(parseInt(valueSlider.value));
   }
 
-  if (simplifyColorToggle.checked) {
+  simplifyColors();
     simplifyColors();
   }
 
@@ -93,7 +93,7 @@ function simplifyColors() {
 function drawGrid() {
   const thirdsX = canvasPosterized.width / 3;
   const thirdsY = canvasPosterized.height / 3;
-  ctxPosterized.strokeStyle = 'rgba(0,0,0,0.2)';
+  ctxPosterized.strokeStyle = 'rgba(0,0,0,0.5)';
   for (let i = 1; i < 3; i++) {
     let x = i * thirdsX;
 

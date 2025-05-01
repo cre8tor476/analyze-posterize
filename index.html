@@ -1,0 +1,90 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Analyze and Posterize Tool</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    body {
+      font-family: sans-serif;
+      margin: 2em;
+    }
+    #container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 2em;
+    }
+    #left, #right {
+      flex: 1 1 400px;
+      text-align: center;
+    }
+    canvas {
+      border: 1px solid #ccc;
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+    }
+    #analysis,
+    #posterizedInfo {
+      font-size: 1rem;
+      min-height: 4em;
+      margin: 1em auto 0 auto;
+      max-width: 320px;
+    }
+    .controls {
+      margin-top: 1em;
+    }
+    @media (max-width: 768px) {
+      #container {
+        flex-direction: column;
+        align-items: center;
+      }
+      canvas {
+        width: 90vw;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <h1 style="text-align:center;">🖼 Analyze and Posterize</h1>
+
+  <input type="file" id="upload" accept="image/*"><br><br>
+
+  <div id="container">
+    <div id="left">
+      <canvas id="canvasOriginal" width="800" height="600"></canvas>
+      <div id="analysis">
+        <strong>🌗 Value Contrast:</strong> ...<br>
+        <strong>🔲 Edge Simplicity:</strong> ...<br>
+        <em>Upload an image to analyze paintability</em>
+      </div>
+    </div>
+
+    <div id="right">
+      <canvas id="canvasPosterized" width="800" height="600"></canvas>
+      <div id="posterizedInfo">
+        <div class="controls">
+          <label for="valueSlider"><strong>Simplify to:</strong></label>
+          <input type="range" id="valueSlider" min="3" max="6" value="6"><br><br>
+
+          <label for="chromaSlider"><strong>Light Area Chroma:</strong></label>
+          <input type="range" id="chromaSlider" min="0" max="100" value="50"><br><br>
+
+          <strong>Current View: Posterized</strong><br><br>
+          <label><input type="checkbox" id="notanToggle"> Toggle Notan</label><br>
+          <label><input type="checkbox" id="simplifyShapesToggle"> Toggle Simplify Shapes</label><br>
+          <label><input type="checkbox" id="simplifyColorToggle"> Toggle Simplify Color Shapes</label><br>
+          <label><input type="checkbox" id="gridToggle"> Toggle Grid</label><br><br>
+
+          <button id="download">Download Image</button><br><br>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>

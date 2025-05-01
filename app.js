@@ -21,10 +21,12 @@ upload.addEventListener('change', function(e) {
   reader.onload = function(event) {
     const img = new Image();
     img.onload = function() {
-      valueSlider.value = 6;
       canvasOriginal.width = canvasPosterized.width = img.width;
       canvasOriginal.height = canvasPosterized.height = img.height;
       ctxOriginal.drawImage(img, 0, 0);
+      ctxPosterized.drawImage(img, 0, 0);
+      valueSlider.value = 6;
+      applyPosterization(6);
       originalImage = img;
       analyzeImage();
       renderPosterized();
@@ -41,7 +43,7 @@ function renderPosterized() {
 
   if (notanToggle.checked) {
     applyNotan();
-  } else else { applyPosterization(parseInt(valueSlider.value)); }
+  } else { applyPosterization(parseInt(valueSlider.value)); }
     applyPosterization(parseInt(valueSlider.value));
   }
 
@@ -82,10 +84,8 @@ function simplifyColors() {
   const data = imageData.data;
   const chromaScale = chromaSlider.value / 100;
   for (let i = 0; i < data.length; i += 4) {
-    const avg = (data[i] + data[i+1] + data[i+2]) / 3;
-    data[i] = avg + (data[i] - avg) * chromaScale;
-    data[i+1] = avg + (data[i+1] - avg) * chromaScale;
-    data[i+2] = avg + (data[i+2] - avg) * chromaScale;
+    data[i+1] *= chromaScale;
+    data[i+2] *= chromaScale;
   }
   ctxPosterized.putImageData(imageData, 0, 0);
 }
@@ -93,7 +93,7 @@ function simplifyColors() {
 function drawGrid() {
   const thirdsX = canvasPosterized.width / 3;
   const thirdsY = canvasPosterized.height / 3;
-  ctxPosterized.strokeStyle = 'rgba(0,0,0,0.5)';
+  ctxPosterized.strokeStyle = 'rgba(0,0,0,1)';
   for (let i = 1; i < 3; i++) {
     let x = i * thirdsX;
 
